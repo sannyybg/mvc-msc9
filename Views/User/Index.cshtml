@@ -1,0 +1,58 @@
+﻿@model IEnumerable<muscshop.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+<h2>Index</h2>
+
+<br>
+<form action="/User/Search" method="get">
+    <input type="text" name="parameter" placeholder="Username" />
+    <input type="submit" value="Search" />
+</form>
+
+<br>
+
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Confirmation</th>
+        <th>Rolechange</th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>@item.Username</td>
+    <td>@item.Email</td>
+    <td>@item.Active</td>
+    @{ var roleslist = item.Roles.Select(x => x.RoleName).ToList();
+        if (roleslist.Contains("Manager"))
+        {
+            <td>@Html.ActionLink("ჩამოერთვას მენეჯერი", "ChangeRole", new { id = item.UserId })</td>
+        }
+        else if (roleslist.Contains("Customer") || roleslist.Contains("Guest"))
+        {
+            <td>@Html.ActionLink("გახდეს მენეჯერი", "ChangeRole", new { id = item.UserId })</td>
+        }
+
+        else
+        {
+            <td>Administrator</td>
+        }
+
+
+    }
+</tr>
+    }
+
+
+
+</table>
